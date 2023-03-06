@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>抖支付</title>
+    <style>
+        #iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        
+    </div>
+
+    <script>
+        //安卓、苹果回调
+        const ua = window.navigator.userAgent.toLowerCase()
+        console.log('ua',ua)
+        // ios平台
+        const isIos = (() => {
+            return /iPhone|iPod|iPad/i.test(ua)
+        })()
+        // android平台
+        const isAndroid = (() => {
+            return /Android|Adr/i.test(ua)
+        })()
+        // 微信生态
+        const isWechat = (() => {
+            return /MicroMessenger/i.test(ua)
+        })()
+        // 支付宝
+        const isAlipay = (()=> {
+            return /AlipayClient/i.test(ua)
+        })()
+        //抖音
+        const isDouYin = (()=> {
+            return /aweme/i.test(ua)
+        })()
+        // 获取query参数
+         const getQuery = (name) => {
+            const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+            const r = window.location.search.substr(1).match(reg)
+            if (r != null) {
+                return unescape(r[2])
+            }
+            return null
+        }
+        
+        const url = 'https://play.pgp1024.com/p/' + getQuery('s')
+        console.log('url',url)
+        if(!isDouYin) {
+            window.location.href = url
+        }else {
+            const iframe = document.createElement('iframe')
+            iframe.src = url
+            iframe.id = 'iframe'
+            iframe.frameBorder = 0
+            iframe.scrolling = 'no'
+            iframe.allowTransparency = true
+            iframe.allowFullScreen = true
+            iframe.allow = 'autoplay'
+            document.body.appendChild(iframe)
+        }
+    </script>
+</body>
+</html>
